@@ -2,7 +2,7 @@ import type { Page, Node, SectionNode } from "@ktmage/spekta";
 import { getSections } from "./ir-helpers.js";
 
 export function pageUrlPath(page: Page): string {
-  return `/${page.type}/${page.title}/`;
+  return `/${encodeURIComponent(page.type)}/${encodeURIComponent(page.title)}/`;
 }
 
 export function buildAnchorMap(page: Page): Map<string, string> {

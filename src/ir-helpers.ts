@@ -19,6 +19,5 @@ export function getSections(children: Node[] | undefined): SectionNode[] {
 }
 
 export function getDisplayTitle(page: Page): string {
-  const firstSection = findNode(page.children, "section");
-  return firstSection?.title ?? page.title;
+  return page.title;
 }

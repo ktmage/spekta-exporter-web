@@ -22,6 +22,10 @@ export function renderPageContent(
   const seeNodes = filterNodes(page.children, "see");
   const imageNode = findNode(page.children, "image");
   const graphNode = findNode(page.children, "graph");
+  const textNodes = filterNodes(page.children, "text");
+  const codeNodes = filterNodes(page.children, "code");
+  const calloutNodes = filterNodes(page.children, "callout");
+  const listNodes = filterNodes(page.children, "list");
   const sectionNodes = getSections(page.children);
 
   if (summaryNode) {
@@ -45,6 +49,18 @@ export function renderPageContent(
     }
   }
 
+  for (const calloutNode of calloutNodes) {
+    const labelMap = { note: "Note", warning: "Warning", tip: "Tip" } as const;
+    parts.push(`  <div class="spec-callout--${calloutNode.variant}">`);
+    parts.push(`    <div class="spec-callout__label">${labelMap[calloutNode.variant]}</div>`);
+    parts.push(`    <div class="spec-callout__text">${escapeHtml(calloutNode.text)}</div>`);
+    parts.push(`  </div>`);
+  }
+
+  for (const textNode of textNodes) {
+    parts.push(`  <p class="spec-text">${escapeHtml(textNode.text)}</p>`);
+  }
+
   if (imageNode) {
     imagePaths.push(imageNode.path);
     const filename = path.basename(imageNode.path);
@@ -57,6 +73,21 @@ export function renderPageContent(
     parts.push(`  <div class="spec-graph">`);
     parts.push(`    <div class="mermaid">${escapeHtml(graphNode.text)}</div>`);
     parts.push(`  </div>`);
+  }
+
+  for (const codeNode of codeNodes) {
+    const langAttr = codeNode.language ? ` class="language-${escapeHtml(codeNode.language)}"` : "";
+    parts.push(`  <pre class="spec-code"><code${langAttr}>${escapeHtml(codeNode.text)}</code></pre>`);
+  }
+
+  for (const listNode of listNodes) {
+    if (listNode.children) {
+      parts.push(`  <ul class="spec-list">`);
+      for (const item of listNode.children) {
+        parts.push(`    <li>${escapeHtml(item.text)}</li>`);
+      }
+      parts.push(`  </ul>`);
+    }
   }
 
   if (sectionNodes.length > 0) {

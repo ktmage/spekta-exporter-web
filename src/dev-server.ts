@@ -66,7 +66,7 @@ export function startDevServer(staticDir: string, port: number): DevServer {
 }
 
 function serveStaticFile(staticDir: string, pathname: string, res: http.ServerResponse): void {
-  let filePath = path.join(staticDir, pathname);
+  let filePath = path.join(staticDir, decodeURIComponent(pathname));
 
   if (filePath.endsWith("/") || !path.extname(filePath)) {
     const indexPath = path.join(filePath, "index.html");

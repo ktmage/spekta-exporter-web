@@ -23,6 +23,10 @@ export function renderSection(
   const imageNode = findNode(sectionNode.children, "image");
   const graphNode = findNode(sectionNode.children, "graph");
   const stepsNode = findNode(sectionNode.children, "steps");
+  const textNodes = filterNodes(sectionNode.children, "text");
+  const codeNodes = filterNodes(sectionNode.children, "code");
+  const calloutNodes = filterNodes(sectionNode.children, "callout");
+  const listNodes = filterNodes(sectionNode.children, "list");
   const childSections = getSections(sectionNode.children);
 
   const parts: string[] = [];
@@ -61,6 +65,18 @@ export function renderSection(
     parts.push(`  </div>`);
   }
 
+  for (const calloutNode of calloutNodes) {
+    const labelMap = { note: "Note", warning: "Warning", tip: "Tip" };
+    parts.push(`  <div class="spec-callout--${calloutNode.variant}">`);
+    parts.push(`    <div class="spec-callout__label">${labelMap[calloutNode.variant]}</div>`);
+    parts.push(`    <div class="spec-callout__text">${escapeHtml(calloutNode.text)}</div>`);
+    parts.push(`  </div>`);
+  }
+
+  for (const textNode of textNodes) {
+    parts.push(`  <p class="spec-text">${escapeHtml(textNode.text)}</p>`);
+  }
+
   if (imageNode) {
     imagePaths.push(imageNode.path);
     const filename = path.basename(imageNode.path);
@@ -73,6 +89,11 @@ export function renderSection(
     parts.push(`  <div class="spec-graph">`);
     parts.push(`    <div class="mermaid">${escapeHtml(graphNode.text)}</div>`);
     parts.push(`  </div>`);
+  }
+
+  for (const codeNode of codeNodes) {
+    const langAttr = codeNode.language ? ` class="language-${escapeHtml(codeNode.language)}"` : "";
+    parts.push(`  <pre class="spec-code"><code${langAttr}>${escapeHtml(codeNode.text)}</code></pre>`);
   }
 
   if (stepsNode && stepsNode.children) {
@@ -89,6 +110,16 @@ export function renderSection(
       }
     }
     parts.push(`  </ol>`);
+  }
+
+  for (const listNode of listNodes) {
+    if (listNode.children) {
+      parts.push(`  <ul class="spec-list">`);
+      for (const item of listNode.children) {
+        parts.push(`    <li>${escapeHtml(item.text)}</li>`);
+      }
+      parts.push(`  </ul>`);
+    }
   }
 
   if (childSections.length > 0) {
