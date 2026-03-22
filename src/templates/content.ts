@@ -1,6 +1,6 @@
 import * as path from "node:path";
 import type { Page, Node } from "@ktmage/spekta";
-import { escapeHtml } from "../html.js";
+import { escapeHtml, renderInlineMarkup } from "../html.js";
 import { pageUrlPath } from "../anchor.js";
 import { findNode, filterNodes, getSections, getDisplayTitle } from "../ir-helpers.js";
 import { renderSection } from "./section.js";
@@ -29,7 +29,7 @@ export function renderPageContent(
   const sectionNodes = getSections(page.children);
 
   if (summaryNode) {
-    parts.push(`  <p class="spec-content__summary">${escapeHtml(summaryNode.text)}</p>`);
+    parts.push(`  <p class="spec-content__summary">${renderInlineMarkup(summaryNode.text)}</p>`);
   }
 
   if (seeNodes.length > 0) {
@@ -53,12 +53,12 @@ export function renderPageContent(
     const labelMap = { note: "Note", warning: "Warning", tip: "Tip" } as const;
     parts.push(`  <div class="spec-callout--${calloutNode.variant}">`);
     parts.push(`    <div class="spec-callout__label">${labelMap[calloutNode.variant]}</div>`);
-    parts.push(`    <div class="spec-callout__text">${escapeHtml(calloutNode.text)}</div>`);
+    parts.push(`    <div class="spec-callout__text">${renderInlineMarkup(calloutNode.text)}</div>`);
     parts.push(`  </div>`);
   }
 
   for (const textNode of textNodes) {
-    parts.push(`  <p class="spec-text">${escapeHtml(textNode.text)}</p>`);
+    parts.push(`  <p class="spec-text">${renderInlineMarkup(textNode.text)}</p>`);
   }
 
   if (imageNode) {
@@ -84,7 +84,7 @@ export function renderPageContent(
     if (listNode.children) {
       parts.push(`  <ul class="spec-list">`);
       for (const item of listNode.children) {
-        parts.push(`    <li>${escapeHtml(item.text)}</li>`);
+        parts.push(`    <li>${renderInlineMarkup(item.text)}</li>`);
       }
       parts.push(`  </ul>`);
     }

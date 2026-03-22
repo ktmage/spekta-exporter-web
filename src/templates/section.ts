@@ -1,6 +1,6 @@
 import * as path from "node:path";
 import type { Page, SectionNode } from "@ktmage/spekta";
-import { escapeHtml } from "../html.js";
+import { escapeHtml, renderInlineMarkup } from "../html.js";
 import { pageUrlPath } from "../anchor.js";
 import { findNode, filterNodes, getSections } from "../ir-helpers.js";
 
@@ -36,7 +36,7 @@ export function renderSection(
   parts.push(`    <${headingTag} class="spec-group__heading">${escapeHtml(sectionNode.title)}</${headingTag}>`);
 
   if (summaryNode) {
-    parts.push(`    <p class="spec-group__summary">${escapeHtml(summaryNode.text)}</p>`);
+    parts.push(`    <p class="spec-group__summary">${renderInlineMarkup(summaryNode.text)}</p>`);
   }
 
   if (seeNodes.length > 0) {
@@ -61,7 +61,7 @@ export function renderSection(
   if (whyNode) {
     parts.push(`  <div class="spec-callout--why">`);
     parts.push(`    <div class="spec-callout__label">なぜ？</div>`);
-    parts.push(`    <div class="spec-callout__text">${escapeHtml(whyNode.text)}</div>`);
+    parts.push(`    <div class="spec-callout__text">${renderInlineMarkup(whyNode.text)}</div>`);
     parts.push(`  </div>`);
   }
 
@@ -69,12 +69,12 @@ export function renderSection(
     const labelMap = { note: "Note", warning: "Warning", tip: "Tip" };
     parts.push(`  <div class="spec-callout--${calloutNode.variant}">`);
     parts.push(`    <div class="spec-callout__label">${labelMap[calloutNode.variant]}</div>`);
-    parts.push(`    <div class="spec-callout__text">${escapeHtml(calloutNode.text)}</div>`);
+    parts.push(`    <div class="spec-callout__text">${renderInlineMarkup(calloutNode.text)}</div>`);
     parts.push(`  </div>`);
   }
 
   for (const textNode of textNodes) {
-    parts.push(`  <p class="spec-text">${escapeHtml(textNode.text)}</p>`);
+    parts.push(`  <p class="spec-text">${renderInlineMarkup(textNode.text)}</p>`);
   }
 
   if (imageNode) {
@@ -100,7 +100,7 @@ export function renderSection(
     parts.push(`  <ol class="spec-example__steps">`);
     for (const stepsChild of stepsNode.children) {
       if (stepsChild.type === "step") {
-        parts.push(`    <li>${escapeHtml(stepsChild.text)}</li>`);
+        parts.push(`    <li>${renderInlineMarkup(stepsChild.text)}</li>`);
       } else if (stepsChild.type === "image") {
         const filename = path.basename(stepsChild.path);
         imagePaths.push(stepsChild.path);
@@ -116,7 +116,7 @@ export function renderSection(
     if (listNode.children) {
       parts.push(`  <ul class="spec-list">`);
       for (const item of listNode.children) {
-        parts.push(`    <li>${escapeHtml(item.text)}</li>`);
+        parts.push(`    <li>${renderInlineMarkup(item.text)}</li>`);
       }
       parts.push(`  </ul>`);
     }
