@@ -11,6 +11,7 @@ export function renderPageContent(
   pageById: Map<string, Page>,
   imagePaths: string[],
   anchorMap: Map<string, string>,
+  basePath: string,
 ): string {
   const parts: string[] = [];
   const displayTitle = getDisplayTitle(page);
@@ -37,7 +38,7 @@ export function renderPageContent(
       .map((seeNode) => {
         const refPage = pageById.get(seeNode.ref);
         if (!refPage) return "";
-        return `<a href="${escapeHtml(pageUrlPath(refPage))}" class="spec-content__related-link">${escapeHtml(refPage.title)}</a>`;
+        return `<a href="${escapeHtml(pageUrlPath(refPage, basePath))}" class="spec-content__related-link">${escapeHtml(refPage.title)}</a>`;
       })
       .filter((link) => link !== "")
       .join(" ");
@@ -93,7 +94,7 @@ export function renderPageContent(
   if (sectionNodes.length > 0) {
     parts.push(`  <div class="spec-content__body">`);
     for (const sectionNode of sectionNodes) {
-      parts.push(renderSection(sectionNode, 1, allPages, pageById, imagePaths, anchorMap));
+      parts.push(renderSection(sectionNode, 1, allPages, pageById, imagePaths, anchorMap, basePath));
     }
     parts.push(`  </div>`);
   }

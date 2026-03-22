@@ -11,6 +11,7 @@ const webExporterConfigSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   path: z.string().optional(),
+  basePath: z.string().optional(),
 }).loose();
 
 export function renderWeb(ir: IR, siteInfo: SiteInfo, outputPath: string): void {
@@ -33,10 +34,10 @@ export function renderWeb(ir: IR, siteInfo: SiteInfo, outputPath: string): void 
 
   if (ir.pages.length > 0) {
     const firstPage = ir.pages[0];
-    fs.writeFileSync(path.join(outputPath, "index.html"), renderRedirectHtml(pageUrlPath(firstPage)), "utf-8");
+    fs.writeFileSync(path.join(outputPath, "index.html"), renderRedirectHtml(pageUrlPath(firstPage, siteInfo.basePath)), "utf-8");
   }
 
-  fs.writeFileSync(path.join(outputPath, "404.html"), renderRedirectHtml("/"), "utf-8");
+  fs.writeFileSync(path.join(outputPath, "404.html"), renderRedirectHtml(siteInfo.basePath), "utf-8");
 
   if (imagePaths.length > 0) {
     const imagesDir = path.join(outputPath, "images");
@@ -61,6 +62,7 @@ const plugin = {
       name: webConfig.name,
       description: webConfig.description,
       builtAt: new Date().toISOString(),
+      basePath: webConfig.basePath ?? "/",
     };
     renderWeb(ir, siteInfo, outputDir);
   },

@@ -11,6 +11,7 @@ export function renderSection(
   pageById: Map<string, Page>,
   imagePaths: string[],
   anchorMap: Map<string, string>,
+  basePath: string,
 ): string {
   const depthClass = `spec-group--depth-${Math.min(depth, 4)}`;
   const headingLevel = Math.min(depth + 1, 5);
@@ -44,7 +45,7 @@ export function renderSection(
       .map((seeNode) => {
         const refPage = pageById.get(seeNode.ref);
         if (!refPage) return "";
-        return `<a href="${escapeHtml(pageUrlPath(refPage))}" class="spec-group__related-link">${escapeHtml(refPage.title)}</a>`;
+        return `<a href="${escapeHtml(pageUrlPath(refPage, basePath))}" class="spec-group__related-link">${escapeHtml(refPage.title)}</a>`;
       })
       .filter((link) => link !== "")
       .join(" ");
@@ -125,7 +126,7 @@ export function renderSection(
   if (childSections.length > 0) {
     parts.push(`  <div class="spec-group__children">`);
     for (const childSection of childSections) {
-      parts.push(renderSection(childSection, depth + 1, allPages, pageById, imagePaths, anchorMap));
+      parts.push(renderSection(childSection, depth + 1, allPages, pageById, imagePaths, anchorMap, basePath));
     }
     parts.push(`  </div>`);
   }

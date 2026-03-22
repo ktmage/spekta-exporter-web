@@ -11,12 +11,13 @@ export function renderSidebar(
   currentPageId: string,
   searchEntries: SearchEntry[],
   anchorMap: Map<string, string>,
+  basePath: string,
 ): string {
   const navItems = pages.map((page) => {
     const isActive = page.id === currentPageId;
     const activeClass = isActive ? " sidebar__link--active" : "";
     const openAttr = isActive ? " open" : "";
-    const pageUrl = pageUrlPath(page);
+    const pageUrl = pageUrlPath(page, basePath);
     const sectionNodes = getSections(page.children);
 
     let subtreeHtml = "";

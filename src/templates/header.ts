@@ -4,6 +4,7 @@ export interface SiteInfo {
   name: string;
   description?: string;
   builtAt?: string;
+  basePath: string;
 }
 
 export function renderSiteHeader(siteInfo: SiteInfo): string {

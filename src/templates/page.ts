@@ -31,8 +31,9 @@ export function renderPageHtml(
   const htmlTitle = `${escapeHtml(displayTitle)} - ${escapeHtml(siteName)}`;
 
   const anchorMap = buildAnchorMap(page);
-  const sidebarHtml = renderSidebar(allPages, page.id, searchEntries, anchorMap);
-  const contentHtml = renderPageContent(page, allPages, pageById, imagePaths, anchorMap);
+  const basePath = siteInfo.basePath;
+  const sidebarHtml = renderSidebar(allPages, page.id, searchEntries, anchorMap, basePath);
+  const contentHtml = renderPageContent(page, allPages, pageById, imagePaths, anchorMap, basePath);
   const headerHtml = renderSiteHeader(siteInfo);
   const footerHtml = renderSiteFooter(siteInfo);
 
