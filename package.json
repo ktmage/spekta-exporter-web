@@ -1,6 +1,7 @@
 {
   "name": "@ktmage/spekta-exporter-web",
   "version": "0.2.0",
+  "description": "Spekta Web Exporter — IR から静的 HTML 仕様書サイトを生成",
   "type": "module",
   "main": "dist/render.js",
   "files": ["dist"],
