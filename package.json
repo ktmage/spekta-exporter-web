@@ -1,0 +1,18 @@
+{
+  "name": "@ktmage/spekta-exporter-web",
+  "version": "0.2.0",
+  "type": "module",
+  "main": "dist/render.js",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc && cp src/style.css src/client.js dist/"
+  },
+  "dependencies": {
+    "@ktmage/spekta": "workspace:*",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^22.0.0"
+  }
+}
