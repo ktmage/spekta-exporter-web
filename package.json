@@ -1,10 +1,26 @@
 {
   "name": "@ktmage/spekta-exporter-web",
   "version": "0.2.0",
-  "description": "Spekta Web Exporter — IR から静的 HTML 仕様書サイトを生成",
+  "description": "Spekta Web Exporter — Generate static HTML documentation site from IR",
   "type": "module",
+  "license": "MIT",
+  "author": "ktmage",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ktmage/spekta.git",
+    "directory": "packages/exporters/web"
+  },
+  "homepage": "https://github.com/ktmage/spekta",
+  "bugs": "https://github.com/ktmage/spekta/issues",
+  "keywords": ["spekta", "exporter", "html", "specification", "documentation"],
   "main": "dist/render.js",
   "files": ["dist"],
+  "engines": {
+    "node": ">=16.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc && cp src/style.css src/client.js dist/"
   },
